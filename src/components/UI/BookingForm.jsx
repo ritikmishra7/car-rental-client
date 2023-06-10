@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Form, Input, message } from "antd";
+import { Button, Form, Input, message } from "antd";
 import { axiosClient } from "../../config/axios";
 import { useSelector } from "react-redux";
 
@@ -9,13 +9,31 @@ const BookingForm = ({ carDetails }) => {
 
   const userDetails = useSelector((state) => state?.userDetailsSlice?.userDetails);
 
+  const checkForAvailability = async (date1, date2) => {
+    try {
+      const { data } = await axiosClient.post('/vehicle/check-availability', {
+        vehicle_id: carDetails._id,
+        date_of_booking: date1,
+        date_of_return: date2,
+      });
+
+      return data.result;
+    } catch (e) {
+      return {
+        available: false,
+        message: 'Something went wrong',
+      }
+    }
+  }
+
 
   const handlePayment = async (values) => {
+
     const { date_of_booking, date_of_return } = values;
     const date1 = new Date(date_of_booking);
     const date2 = new Date(date_of_return);
-    const currDate = new Date();
 
+    const currDate = new Date();
     if (date1 < currDate || date2 < currDate) {
       message.error('Date can\'t be in the past');
       return;
@@ -25,6 +43,12 @@ const BookingForm = ({ carDetails }) => {
       return;
     }
 
+    const status = await checkForAvailability(date1, date2);
+    console.log("status haiiii:", status);
+    if (status.available === false) {
+      message.error(status.message);
+      return;
+    }
     const daysBetween = Number(Math.ceil((date2 - date1) / (1000 * 60 * 60 * 24)) + 1);
     const total_price = daysBetween * carDetails.price;
 
@@ -40,9 +64,6 @@ const BookingForm = ({ carDetails }) => {
       price: carDetails.price,
     });
 
-
-    console.log(values);
-    console.log(carDetails);
     const id = data.result.id;
     const options = {
       key: process.env.REACT_APP_RAZORPAY_KEY_ID,
@@ -128,7 +149,7 @@ const BookingForm = ({ carDetails }) => {
         <Input type="time" className="form-control" />
       </Form.Item>
       <div className="payment text-start mt-5">
-        <button type="submit">Pay and Reserve Now</button>
+        <Button type="button" htmlType="submit" style={{ backgroundColor: '#000d6b', color: 'white' }}>Pay and Reserve Now</Button>
       </div>
     </Form>
   );
