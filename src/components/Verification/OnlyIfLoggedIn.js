@@ -7,6 +7,7 @@ const OnlyIfLoggedIn = () => {
         if (!localStorage.getItem("accessToken")) {
             navigate("/login");
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     return <Outlet />;
 }

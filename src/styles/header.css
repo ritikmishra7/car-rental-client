@@ -91,7 +91,7 @@
   column-gap: 0.4rem;
   text-decoration: none;
   color: #fff;
-  justify-content: end;
+  justify-content: flex-end;
   font-size: 0.9rem;
 }
 
@@ -152,6 +152,7 @@
 .search__box input::placeholder {
   font-size: 0.8rem;
 }
+
 .search__box span i {
   color: rgba(255, 255, 255, 0.555);
   cursor: pointer;
@@ -162,6 +163,7 @@
 }
 
 @media only screen and (max-width: 768px) {
+
   .header__top,
   .header__middle,
   .nav__right {

@@ -12,6 +12,7 @@ import Login from "../pages/Login";
 import Signup from "../pages/Signup";
 import OnlyIfLoggedIn from "../components/Verification/OnlyIfLoggedIn";
 import OnlyIfNotLoggedIn from "../components/Verification/OnlyIfNotLoggedIn";
+import PaymentSuccess from "../pages/PaymentSuccess";
 
 const Routers = () => {
   return (
@@ -25,9 +26,10 @@ const Routers = () => {
         <Route path="/home" element={<Home />} />
         <Route path="/about" element={<About />} />
         <Route path="/cars" element={<CarListing />} />
-        <Route path="/cars/:slug" element={<CarDetails />} />
+        <Route path="/cars/:id" element={<CarDetails />} />
+        <Route path="/payment-success" element={<PaymentSuccess />} />
         <Route path="/blogs" element={<Blog />} />
-        <Route path="/blogs/:slug" element={<BlogDetails />} />
+        <Route path="/blogs/:id" element={<BlogDetails />} />
         <Route path="/contact" element={<Contact />} />
       </Route>
 
